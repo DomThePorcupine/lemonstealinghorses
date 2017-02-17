@@ -15,8 +15,8 @@ public class Move : MonoBehaviour {
     {
         t = this.GetComponent<Transform>();
         rb = this.GetComponent<Rigidbody>();
-        animator = this.GetComponent<Animator>();
-        animator.SetBool("Running", false);
+        //animator = this.GetComponent<Animator>();
+        //animator.SetBool("Running", false);
         
     }
 	
@@ -33,6 +33,8 @@ public class Move : MonoBehaviour {
         
         if(Input.GetKey("space"))
         {
+            print("here");
+            //rb.AddForce(Vector3.up * 100f * Time.deltaTime);
             transform.position += transform.up * 10f * Time.deltaTime;
         }
         /*
@@ -49,7 +51,7 @@ public class Move : MonoBehaviour {
         
         t.localRotation = rot;*/
     }
-
+    /*
     private void FixedUpdate()
     {
 
@@ -67,5 +69,5 @@ public class Move : MonoBehaviour {
             animator.SetBool("Running", true);
         }
 
-    }
+    }*/
 }
