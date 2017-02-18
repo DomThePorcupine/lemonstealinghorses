@@ -1,69 +1,141 @@
-﻿using System.Collections;
+﻿/*  --------------------------
+ *  class StartGame
+ *  --------------------------
+ *  methods:
+ *      onStartClick()
+ *      onRestartClick()
+ *      onToggleClick()
+ *      onInstructionClick()
+ *      onBackClick()
+ *      onExitClick()
+ *      volumeControl()
+ *      endGame()
+ *  --------------------------
+ *  IEnumerators:
+ *      StartCount()
+ *  --------------------------
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class StartGame : MonoBehaviour {
-    public GameObject setMove1;
-    public GameObject[] horses;
+    // Buttons
     public GameObject StartButton;
     public GameObject InstructionsButton;
     public GameObject ExitButton;
     public GameObject BackButton;
     public GameObject RestartButton;
-    public GameObject instructions;
-    public GameObject OrchardController;
     public GameObject RabbitButton;
+
+    // Volume Controls
+    public Slider VolumeSlider;
+    public GameObject VolumeSliderObject;
+    public AudioSource Source;
+
+    // Characters
+    public GameObject[] horses;
     public GameObject Rabbits;
-    public GameObject camera;
-    public Text timeText;
-    private Scene currScene;
-    public Slider overallSlider;
-    public GameObject sliderToDisable;
-    public AudioSource source;
+
+    // Time
     public float timeLeft = 60.0f;
-    private float currTime; 
-    // private SceneSetup SceneManager;
-    // Use this for initialization
-    public void volumeControl()
-    {
-        source.volume = overallSlider.value;
-    }
+    private float currTime;
+    public Text timeText;
+
+    // Instructions
+    public GameObject instructions;
+
+    // Player Controls
+    public GameObject Player;
+    public GameObject MouseControlCamera;
+
+    // Orchard Controller
+    public GameObject OrchardController;
+    
+    // Scene
+    private Scene currScene;
+    
+    
+    //--DEFAULT METHODS--//
     void Start ()
     {
         currScene = SceneManager.GetActiveScene();
-       
-        //StartTime = Time.deltaTime;
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetKeyDown("escape"))
+        // Press escape to end game only if you are currently playing
+        if (Input.GetKeyDown("escape") && camera.GetComponent<MouseLook>().active)
         {
-            camera.GetComponent<MouseLook>().active = false;
-            Cursor.lockState = CursorLockMode.None;
+            endGame();
         }
     }
-    private void endGame()
+
+    //--CUSTOM METHODS--//
+
+    /*
+     *  This method is the starting point for gameplay,
+     *  UI buttons are taken off the screen, movement is
+     *  enabled, lemon spawning is activated, and the
+     *  AI starts to move the horses.
+     *
+     * @params: none
+     * 
+     * @return: void
+     */
+    public void onStartClick()
     {
-        Cursor.lockState = CursorLockMode.None;
-        camera.GetComponent<MouseLook>().active = false;
-        //set needed buttons
-        ExitButton.SetActive(true);
-        RestartButton.SetActive(true);
+        // Enable controls
+        Cursor.lockState = CursorLockMode.Locked;
+        MouseControlCamera.GetComponent<MouseLook>().active = true;
+        Player.GetComponent<Move>().enabled = true;
 
+        // Start the clock
+        currTime = Time.deltaTime;
+        timeText.enabled = true;
+        StartCoroutine(StartCount());
 
-        //disable movement
-        setMove1.GetComponent<Move>().enabled = false;
-        for (int i = 0; i < horses.Length; i++)
-        {
-            horses[i].GetComponent<AI>().enabled = false;
-        }
-        OrchardController.GetComponent<OrchardController>().enabled = false;
+        // Turn off the buttons
+        StartButton.SetActive(false);
+        InstructionsButton.SetActive(false);
+        ExitButton.SetActive(false);
+        RabbitButton.SetActive(false);
+        VolumeSliderObject.SetActive(false);
+
+        
+        // Start the horses
+        horses[0].GetComponent<AI>().enabled = true;
+        horses[1].GetComponent<AI>().enabled = true;
+
+        // Start growing lemons
+        OrchardController.GetComponent<OrchardController>().enabled = true;
+        
     }
 
+    /*
+     *  This method reloads the scene and starts a 'new'
+     *  game.
+     *  
+     *  @params: none
+     *  
+     *  @return: void 
+     */ 
+    public void onRestartClick()
+    {
+        SceneManager.LoadScene(currScene.buildIndex);
+    }
+
+    /*
+     *  This method toggles the dancing bunnies on and
+     *  off.
+     *  
+     *  @params: none
+     *  
+     *  @return: void
+     */
     public void onToggleClick()
     {
         if (Rabbits.activeInHierarchy == true)
@@ -71,32 +143,118 @@ public class StartGame : MonoBehaviour {
             Rabbits.SetActive(false);
         }
         else
+        {
             Rabbits.SetActive(true);
+        }
+           
     }
 
-    public void onStartClick()
+    /*
+     *  This method shows the game instructions.
+     *  
+     *  @params: none
+     *  
+     *  @return: void
+     */
+    public void onInstructionsClick()
     {
-        currTime = Time.deltaTime;
-        timeText.enabled = true;
-        Cursor.lockState = CursorLockMode.Locked;
-        camera.GetComponent<MouseLook>().active = true;
-        //set buttons to false
+        // Turn off buttons so screen is visible
         StartButton.SetActive(false);
         InstructionsButton.SetActive(false);
         ExitButton.SetActive(false);
         RabbitButton.SetActive(false);
-        sliderToDisable.SetActive(false);
-        
-        //RestartButton.SetActive(true);
-
-        //start to allow movement
-        setMove1.GetComponent<Move>().enabled = true;
-        horses[0].GetComponent<AI>().enabled = true;
-        horses[1].GetComponent<AI>().enabled = true;
-        OrchardController.GetComponent<OrchardController>().enabled = true;
-        StartCoroutine(StartCount());
+        // Show the instructions
+        instructions.SetActive(true);
+        // Show the back button
+        BackButton.SetActive(true);
     }
 
+    /*
+     *  This method hides the game instructions.
+     *  
+     *  @params: none 
+     *
+     *  @return: void
+     */
+    public void onBackClick()
+    {
+        // Hide the instructions
+        instructions.SetActive(false);
+        // Hide the back button
+        BackButton.SetActive(false);
+
+        // Show all other buttons
+        StartButton.SetActive(true);
+        InstructionsButton.SetActive(true);
+        ExitButton.SetActive(true);
+        RabbitButton.SetActive(true);
+    }
+
+    /*
+     *  This method quits the game.
+     *  
+     *  @params: none
+     *  
+     *  @return: void 
+     */
+    public void onExitClick()
+    {
+        Application.Quit();
+    }
+
+    /*
+     *  This method changes the volume level of 
+     *  the audiosource.
+     * 
+     *  @params: none
+     *
+     *  @return: void
+     */ 
+    public void volumeControl()
+    {
+        Source.volume = VolumeSlider.value;
+    }
+
+    /*
+     *  This method ends the current game, but does
+     *  not quit the application. the mouse is released
+     *  and the buttons are shown again.
+     *  
+     *  @params: none
+     *  
+     *  @return: void
+     */
+    private void endGame()
+    {
+        // Disable Controls
+        Cursor.lockState = CursorLockMode.None;
+        MouseControlCamera.GetComponent<MouseLook>().active = false;
+        Player.GetComponent<Move>().enabled = false;
+
+        // Show the exit and restart buttons
+        ExitButton.SetActive(true);
+        RestartButton.SetActive(true);
+
+
+        // Turn off the horse AI
+        for (int i = 0; i < horses.Length; i++)
+        {
+            horses[i].GetComponent<AI>().enabled = false;
+        }
+
+        // Turn off the orchard/ stop spawning lemons
+        OrchardController.GetComponent<OrchardController>().enabled = false;
+    }
+
+    /*
+     *  This method starts the count down and
+     *  updates the game clock with the remaining time
+     *  
+     *  @params: none
+     *  
+     *  @return: null;
+     * 
+     */
     IEnumerator StartCount()
     {
         while (true)
@@ -110,40 +268,5 @@ public class StartGame : MonoBehaviour {
             }
             yield return null;
         }
-    }
-
-    public void onRestartClick()
-    {
-        SceneManager.LoadScene(currScene.buildIndex);
-    }
-
-    public void onInstructionsClick()
-    {
-        //set buttons to false
-        StartButton.SetActive(false);
-        InstructionsButton.SetActive(false);
-        ExitButton.SetActive(false);
-        RabbitButton.SetActive(false);
-
-        //set text true and back button true
-        instructions.SetActive(true);
-        BackButton.SetActive(true);
-    }
-    public void onBackClick()
-    {
-        //set back false and text false
-        instructions.SetActive(false);
-        BackButton.SetActive(false);
-
-        //set buttons to true
-        StartButton.SetActive(true);
-        InstructionsButton.SetActive(true);
-        ExitButton.SetActive(true);
-        RabbitButton.SetActive(true);
-    }
-
-    public void onExitClick()
-    {
-        Application.Quit();
     }
 }
