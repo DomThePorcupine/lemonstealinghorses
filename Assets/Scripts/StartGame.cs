@@ -68,7 +68,7 @@ public class StartGame : MonoBehaviour {
 	void Update ()
     {
         // Press escape to end game only if you are currently playing
-        if (Input.GetKeyDown("escape") && camera.GetComponent<MouseLook>().active)
+        if (Input.GetKeyDown("escape") && GetComponent<Camera>().GetComponent<MouseLook>().active)
         {
             endGame();
         }
@@ -242,7 +242,7 @@ public class StartGame : MonoBehaviour {
             horses[i].GetComponent<AI>().enabled = false;
         }
 
-        // Turn off the orchard/ stop spawning lemons
+        // Turn off the orchard / stop spawning lemons
         OrchardController.GetComponent<OrchardController>().enabled = false;
     }
 
