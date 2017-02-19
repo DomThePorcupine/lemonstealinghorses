@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GetLemon : MonoBehaviour {
-
+    /*
     private TreeController trees;
     private int sides;
     private int lemonCount = 0;
@@ -33,5 +33,5 @@ public class GetLemon : MonoBehaviour {
             
         }
 
-    }
+    }*/
 }

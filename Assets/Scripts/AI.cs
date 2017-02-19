@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AI : MonoBehaviour {
-
+    /*
     public GameObject[] WayPoints;
     public bool isReady = false;
     private Stack<Vector3> stack = new Stack<Vector3>();
@@ -232,5 +232,5 @@ public class AI : MonoBehaviour {
             
         }
         
-	}
+	}*/
 }

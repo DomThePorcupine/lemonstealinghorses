@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TreeController : MonoBehaviour {
-
+    /*
     public GameObject[] Lemons;
     public Waypoint loc;
     public GameObject allWaypoints;
@@ -112,5 +112,5 @@ public class TreeController : MonoBehaviour {
             yield return null;
         }
         Lemons[spot].transform.localScale = End;
-    }
+    }*/
 }

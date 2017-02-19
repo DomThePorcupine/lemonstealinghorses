@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//!!!Currently does not rotate character at all!
-
 
 /// <summary>
 /// This Script takes in a waypoint as a vector 3 and will lerp gameobject to that point
 /// will control isReady boolean of the AI script
 /// </summary>
-public class TraverseWaypoint : MonoBehaviour {
+public class TraverseWaypoint : MonoBehaviour {/*
     public float speed = 2.0f;
 
 
@@ -71,5 +69,5 @@ public class TraverseWaypoint : MonoBehaviour {
         //set global variable to be used in other methods
         desiredVelocity = directionalVector;
     }
-
+    */
 }

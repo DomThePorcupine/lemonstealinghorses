@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CowboyPunch : MonoBehaviour {
+public class CowboyPunch : MonoBehaviour {/*
     public float punchPower = 500.0f;
     public ForceMode typeOfForce;
     public OrchardController controller;
@@ -35,5 +35,5 @@ public class CowboyPunch : MonoBehaviour {
             isPunching = false;
         }
     }
-
+    */
 }

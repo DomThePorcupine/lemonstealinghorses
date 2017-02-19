@@ -18,7 +18,7 @@ public class LemonPoint
 }
 
 public class OrchardController : MonoBehaviour {
-
+    /*
     public TreeController[] Orchard;
     public float growthrate;
 
@@ -165,5 +165,5 @@ public class OrchardController : MonoBehaviour {
         horseScoreSub.GetComponent<resetByTime>().resetStart();
 
 
-    }
+    }*/
 }
